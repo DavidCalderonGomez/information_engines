@@ -6,7 +6,7 @@
 //We'll use the following new units: m'=9,8e-9m, s'=0,8e-3s, kg'=42e-15kg 
 //---------------------------------------------------------------
 const double samp_freq=41;
-const int parameter=10; //parameter evlutions each sample time
+const int parameter=100; //parameter evolutions each sample time such that p
 const double ts=1/samp_freq,kbT=640, gama=640, kspring=640, gravity = 640; //ts is the sampling time
 const double dt=ts/parameter;
 const double alpha = 1-exp(-gama*dt), alphap=alpha*(2-alpha);
