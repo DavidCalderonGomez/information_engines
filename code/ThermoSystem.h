@@ -5,7 +5,8 @@
 //dt=1 mus, kspring=42pN/mum, gamma=3,36x10^-8m²kg/s, g=9,8m²/s, kBT=403,2x10^-23J, m=42 x10^-15kg
 //We'll use the following new units: m'=9,8e-9m, s'=0,8e-3s, kg'=42e-15kg 
 //---------------------------------------------------------------
-const int samp_freq=14, parameter=23; //parameter evlutions each sample time
+const double samp_freq=41;
+const int parameter=10; //parameter evlutions each sample time
 const double ts=1/samp_freq,kbT=640, gama=640, kspring=640, gravity = 640; //ts is the sampling time
 const double dt=ts/parameter;
 const double alpha = 1-exp(-gama*dt), alphap=alpha*(2-alpha);
