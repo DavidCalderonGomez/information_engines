@@ -26,7 +26,7 @@ int main(){
             particle.set_Potential_zero(previous_Pot+up);
             cout<<particle.get_Pos()<<" "<<particle.get_Potential_zero()<<endl;
         }	        
-        particle.CalculateForce();//calculates all forces
+      particle.CalculateForce();//calculates all forces
 	    particle.ThermoEvolution(ran64);//evolves the system     
     }
   return 0;
