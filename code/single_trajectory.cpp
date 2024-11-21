@@ -24,6 +24,7 @@ int main(){
             previous_Pos = particle.get_Pos(); //stores the position before the evolution        
             up = particle.Protocol(gain,ran64, previous_Pos, SNR);
             particle.set_Potential_zero(previous_Pot+up);
+            cout<<particle.get_Pos()<<" "<<particle.get_Potential_zero()<<endl;
         }	        
         particle.CalculateForce();//calculates all forces
 	    particle.ThermoEvolution(ran64);//evolves the system     
