@@ -5,6 +5,7 @@
 
 using std::cout, std::endl;
 
+
 int steps = parameter*samp_freq*100; 
 
 int main(){
@@ -14,7 +15,8 @@ int main(){
   double gain=1.5;double SNR=11;
   double Pos=0, Pot=0;
   double past_up=0,up=0; //to apply the one step delay
-  
+  int time=0;
+
     particle.Initialize(0,0); 
     particle.Launch();
     
@@ -26,7 +28,8 @@ int main(){
             up = particle.Protocol(gain,ran64,Pos,SNR);//calculate the one will be used in the next step
             particle.set_Potential_zero(Pot+past_up);//change the potential with the result from the previous step
             
-            cout<<j/parameter<<"  "<<Pos<<" "<<Pot<<endl;
+            time++;
+            cout<<time<<"  "<<Pos<<" "<<Pot<<endl;
 
             past_up=up; //for the next iteration this is now past 
         }	        
