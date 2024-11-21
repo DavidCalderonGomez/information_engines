@@ -26,7 +26,7 @@ int main(){
             up = particle.Protocol(gain,ran64,Pos,SNR);//calculate the one will be used in the next step
             particle.set_Potential_zero(Pot+past_up);//change the potential with the result from the previous step
             
-            cout<<Pos<<" "<<Pot<<endl;
+            cout<<j/parameter<<"  "<<Pos<<" "<<Pot<<endl;
 
             past_up=up; //for the next iteration this is now past 
         }	        
