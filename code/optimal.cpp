@@ -7,7 +7,7 @@ using std::cout, std::endl;
 
 
 int steps = parameter*samp_freq*100; 
-int runs = 1000;
+int runs = 100;
 
 int main(){
   
@@ -20,12 +20,14 @@ int main(){
 
   double mean_work=0;
 
+    
+
+
+ for (gain = 0.5; gain < 2; gain+=0.1){ //iterate over different gains
+    
     for(int k=0;k<runs;k++) particle[k].Initialize(0,0); 
     for(int k=0;k<runs;k++) particle[k].Launch();
-    
-    for (gain = 0.5; gain < 2.1; gain+=0.1){ //iterate over different gains
-    
-    
+
     for(int j=1;j<steps;j++){
         for(int k=0;k<runs;k++) {
         
@@ -43,7 +45,10 @@ int main(){
     }
     }
 
-    for(int k=0;k<runs;k++) {mean_work+= particle[k].get_Work();}
+    for(int k=0;k<runs;k++) {
+      mean_work+= particle[k].get_Work();
+      particle[k].reset();
+      }
     cout<<gain<<"   "<<mean_work/runs<<endl;
     mean_work=0;
     }
