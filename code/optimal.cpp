@@ -15,15 +15,12 @@ int main(){
   Particle particle[runs]; //create an array of particles  
   double gain=0.5;double SNR=11;
   double Pos=0, Pot=0;
-  double past_up[runs]={},up[runs]={}; //to apply the one step delay
   int time=0;
+  double rise[runs]={};
 
   double mean_work=0;
 
-    
-
-
- for (gain = 0.5; gain < 2; gain+=0.1){ //iterate over different gains
+ for (gain = 0; gain <= 2; gain+=0.1){ //iterate over different gains
     
     for(int k=0;k<runs;k++) particle[k].Initialize(0,0); 
     for(int k=0;k<runs;k++) particle[k].Launch();
@@ -35,11 +32,10 @@ int main(){
         if(j%parameter==0){ 
             Pot = particle[k].get_Potential_zero(); //store potential zero
             Pos = particle[k].get_Pos(); //stores the position before the evolution        
-            up[k] = particle[k].Protocol(gain,ran64,Pos,SNR);//calculate the one will be used in the next step
-            particle[k].set_Potential_zero(Pot+past_up[k]);//change the potential with the result from the previous step
+            rise[k] = particle[k].Protocol(gain,ran64,Pos,SNR);//calculate the one will be used in the next step
+            particle[k].set_Potential_zero(Pot+rise[k]);//change the potential with the result from the previous step
             particle[k].CalculateWork(Pot);//calculates the work with the past potential
-            past_up[k]=up[k]; //for the next iteration this is now past 
-        }	        
+            }	        
         particle[k].CalculateForce();//calculates all forces
 	    particle[k].ThermoEvolution(ran64);//evolves the system     
     }
