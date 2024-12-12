@@ -6,7 +6,7 @@
 //We'll use the following new units: m'=9,8e-9m, s'=0,8e-3s, kg'=42e-15kg 
 //---------------------------------------------------------------
 const double samp_freq=41;
-const int parameter=23; //parameter evolutions each sample time such that p
+const int parameter=23; //parameter evolutions each sample time
 const double ts=1/samp_freq,kbT=640, gama=640, kspring=640, gravity = 640; //ts is the sampling time
 const double dt=ts/parameter;
 const double alpha = 1-exp(-gama*dt), alphap=alpha*(2-alpha);
@@ -19,6 +19,7 @@ class Particle{
   double get_Vel(){ return Vel; }
   double get_Potential_zero(){return Potential_zero;}
   void set_Potential_zero(double value){Potential_zero=value;}
+  void reset(){Pos=0,Vel=0,Vi=0,Vp=0,Work=0,Measurement=0,Fex=0,Potential_zero=0;}
   double get_Work(){return Work;}
   
   void Initialize(double xi, double vi);
