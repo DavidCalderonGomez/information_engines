@@ -7,13 +7,12 @@
 //---------------------------------------------------------------
 const double samp_freq=41;
 const int parameter=23; //parameter evolutions each sample time
-const double ts=1/samp_freq,kbT=640, gama=640, kspring=640, gravity = 640; //ts is the sampling time
+const double Mass=0.8,ts=1/samp_freq,kbT=640, gama=640, kspring=640, gravity = 640; //ts is the sampling time
 const double dt=ts/parameter;
 const double alpha = 1-exp(-gama*dt), alphap=alpha*(2-alpha);
 //---------------------------------------------------------------------------------------------------
 class Particle{
   double Pos,Vel, Vi, Vp, Dv, Work, Measurement, Fex, Pot;
-  double Mass=0.8; 
  public:		    
   double get_Pos(){ return Pos; }
   double get_Vel(){ return Vel; }
