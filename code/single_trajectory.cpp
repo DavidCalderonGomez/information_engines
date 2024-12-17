@@ -5,33 +5,30 @@
 
 using std::cout, std::endl;
 
-
-int steps = parameter*samp_freq*100; 
-
+int ttime = 100; // a hundred of my units of time
+int steps = parameter*samp_freq*ttime;
 int main(){
-  
+
   Crandom ran64(1);//create the generator of random numbers
-  Particle particle; //create an array of particles  
-  double gain=1.5;double SNR=11;
-  double Pos=0, Pot=0;
-  double past_up=0,up=0; //to apply the one step delay
-  int time=0;
+  Particle particle; //create a particle
+  double gain=1.63;double SNR=11; 
+  double Pos=0,Pot=0,rise;
+  double t=0;
 
     particle.Initialize(0,0); 
+    particle.CalculateForce();
     particle.Launch();
     
     for(int j=1;j<steps;j++){
 	//evolve one step each particle:
         if(j%parameter==0){ 
-            Pot = particle.get_Potential_zero(); //store potential zero
+            Pot = particle.get_Pot(); //store potential zero
             Pos = particle.get_Pos(); //stores the position before the evolution        
-            up = particle.Protocol(gain,ran64,Pos,SNR);//calculate the one will be used in the next step
-            particle.set_Potential_zero(Pot+past_up);//change the potential with the result from the previous step
+            rise = particle.Protocol(gain,ran64,SNR);//calculates rise of the potential
+            particle.set_Pot(Pot+rise);//rises the trap
             
-            time++;
-            cout<<time<<"  "<<Pos<<" "<<Pot<<endl;
-
-            past_up=up; //for the next iteration this is now past 
+            t+=ts;
+            cout<<t<<"  "<<Pos<<" "<<Pot<<endl;
         }	        
       particle.CalculateForce();//calculates all forces
 	    particle.ThermoEvolution(ran64);//evolves the system     
