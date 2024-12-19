@@ -2,11 +2,11 @@
 #include <cmath>
 #include "Random64.h"
 
-//dt=1 mus, kspring=42pN/mum, gamma=3,36x10^-8m²kg/s, g=9,8m²/s, kBT=403,2x10^-23J, m=42 x10^-15kg
+//ts=1 mus, kspring=42pN/mum, gamma=3,36x10^-8m²kg/s, g=9,8m²/s, kBT=403,2x10^-23J, m=42 x10^-15kg
 //We'll use the following new units: m'=9,8e-9m, s'=0,8e-3s, kg'=42e-15kg 
 //---------------------------------------------------------------
 const double samp_freq=41;
-const int parameter=23; //parameter evolutions each sample time
+const int parameter=23; //parameter evolutions each sample time s.t akpha is nearly 0.5
 const double Mass=0.8,ts=1/samp_freq,kbT=640, gama=640, kspring=640, gravity = 640; //ts is the sampling time
 const double dt=ts/parameter;
 const double alpha = 1-exp(-gama*dt), alphap=alpha*(2-alpha);
@@ -41,8 +41,8 @@ void Particle::CalculateForce(){
 void Particle::ThermoEvolution(Crandom &ran64){
   //one step of thermal evolution
   Vp=Vel+Fex/Mass*dt;
-  Dv=-alpha*Vel+sqrt(alphap*kbT/Mass)*ran64.gauss(0,1);
-  Pos=Pos+(Vel+Dv/2)*dt;
+  Dv=-alpha*Vp+sqrt(alphap*kbT/Mass)*ran64.gauss(0,1);
+  Pos=Pos+(Vp+Dv/2)*dt;
   Vel=Vp+Dv;
 }
 double Particle::Protocol(double gain, Crandom &ran64,double SNR){ //introduce some gain that ideally could be 2
