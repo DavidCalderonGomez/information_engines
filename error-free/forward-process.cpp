@@ -4,7 +4,7 @@
 #include "ThermoSystem.h"
 
 using std::cout, std::endl;
-int total_time=100, samp=41;// a hundred of my units of time
+int total_time=100, samp=40;// a hundred of my units of time
 int steps = samp*total_time; 
 int main(){
 
@@ -14,7 +14,9 @@ int main(){
   double rise;
 
     particle.Initialize(0,0); 
+    particle.CalculateForce();
     particle.Launch();
+
     
   // feedback each relaxation time with one step time delay
   //describe Experimental demonstration of information-to-energy conversion and validation of the generalized Jarzynski equality
@@ -24,11 +26,16 @@ int main(){
 	//evolve one step each particle:
   if (j%samp==0){ //each relaxation time the protocol is executed.      
       rise = particle.Protocol(gain,ran64);//calculates rise of the potential
+      
+      particle.CalculateForce();
       particle.ThermoEvolution(ran64);
+      
       cout<<j/samp_freq<<"  "<<particle.get_Pos()<<" "<<particle.get_Pot()<<endl;  
       particle.set_Pot(particle.get_Pot()+rise);//rises the trap with a time step ddelay.
   }else{         
+      particle.CalculateForce();
 	    particle.ThermoEvolution(ran64);//evolves the system   
+      
       cout<<j/samp_freq<<"  "<<particle.get_Pos()<<" "<<particle.get_Pot()<<endl;    
     }
   }

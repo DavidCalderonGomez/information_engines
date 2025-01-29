@@ -5,9 +5,9 @@
 //ts=1 mus, kspring=42pN/mum, gamma=3,36x10^-8m²kg/s, g=9,8m²/s, kBT=403,2x10^-23J, m=42 x10^-15kg
 //We'll use the following new units: m'=9,8e-9m, s'=0,8e-3s, kg'=42e-15kg 
 //---------------------------------------------------------------
-const double samp_freq=41;
+const double samp_freq=40;
 const double Mass=0.8,ts=1/samp_freq,kbT=640, gama=640, kspring=640, gravity = 640; //ts is the sampling time
-const double dt=ts;
+const double dt=ts/20; //that 20 is found to reproduce the thermostat accurately
 const double alpha = 1-exp(-gama*dt), alphap=alpha*(2-alpha);
 //---------------------------------------------------------------------------------------------------
 class Particle{
@@ -21,6 +21,7 @@ class Particle{
   
   void Initialize(double Pos0, double Vel0);
   void Launch();//First step in the Gunsteren Berendsen algorithm
+  void CalculateForce();
   void ThermoEvolution(Crandom &ran64);//evolves the system
   double Protocol(double gain, Crandom &ran64);//returns the difference between measurement and potential
   void CalculateWork(double previous_Pot);
@@ -28,17 +29,17 @@ class Particle{
 //--------------------------------------------------------------------------------------------------
 //Method implementation
 void Particle::Initialize(double Pos0, double Vel0){
-  Pos=Pos0,Vel=Vel0,Work=0,Pot=0;
+  Pos=Pos0,Vel=Vel0,Work=0,Pot=0,Fex=0;
 }
 
 void Particle::Launch(){ //for the fist step to begin half before
   Vhalf=Vel-dt*Fex/(2*Mass);
 }
-
+void Particle::CalculateForce(){
+  Fex = -kspring*(Pos-Pot)-gravity*Mass;
+}
 void Particle::ThermoEvolution(Crandom &ran64){
   //one step of thermal evolution
-
-  Fex = -kspring*(Pos-Pot)-gravity*Mass;
 
   Vel=Vhalf+Fex/Mass*dt;
 
