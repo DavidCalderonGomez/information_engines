@@ -5,10 +5,10 @@
 //ts=1 mus, kspring=42pN/mum, gamma=3,36x10^-8m²kg/s, g=9,8m²/s, kBT=403,2x10^-23J, m=42 x10^-15kg
 //We'll use the following new units: m'=9,8e-9m, s'=0,8e-3s, kg'=42e-15kg 
 //---------------------------------------------------------------
-const double samp_freq=40;
-const double Mass=0.8,ts=1/samp_freq,kbT=640, gama=640, kspring=640, gravity = 640; //ts is the sampling time
-const double dt=ts/20; //that 20 is found to reproduce the thermostat accurately
-const double alpha = 1-exp(-gama*dt), alphap=alpha*(2-alpha);
+double samp_freq=40;
+double Mass=0.8,ts=1/samp_freq,kbT=640, gama=640/Mass, kspring=640, gravity = 640; //ts is the sampling time gama=640
+double dt=ts/32; //that number dividing is found to reproduce the thermostat accurately
+double alpha = 1-exp(-gama*dt), alphap=alpha*(2-alpha);
 //---------------------------------------------------------------------------------------------------
 class Particle{
   double Pos,Vel,Vhalf, Dv, Work, Measurement, Fex, Pot;
@@ -17,6 +17,9 @@ class Particle{
   double get_Vel(){ return Vhalf; }
   double get_Pot(){return Pot;}
   void set_Pot(double value){Pot=value;}
+
+  void OU_process(){gama=1;} //this is used to test Ohrnstein Uhlenbeck process 
+
   double get_Work(){return Work;}
   
   void Initialize(double Pos0, double Vel0);
