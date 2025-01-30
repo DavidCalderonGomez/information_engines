@@ -20,8 +20,6 @@ int main(){
   
   Crandom ran64(1);//create the generator of random numbers
   Particle particle[runs]; //create an array of particles  
-  double Pos=0, Pot=0,rise;
-  int t=0;
 
     for(int k=0;k<runs;k++){
       particle[k].Initialize(0,0); 
