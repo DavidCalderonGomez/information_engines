@@ -4,41 +4,42 @@
 #include "ThermoSystem.h"
 
 using std::cout, std::endl;
-int total_time=100, samp=40;// a hundred of my units of time
-int steps = samp*total_time; 
+int total_time=100, sample=samp, evolve=evol;
+int steps = sample*evolve*total_time; 
+
 int main(){
 
   Crandom ran64(1);//create the generator of random numbers
   Particle particle; //create a particle
   double gain=2; //how much you rise the potential. 
-  double rise;
+  double rise, Pot=0;
 
     particle.Initialize(0,0); 
     particle.CalculateForce();
     particle.Launch();
 
-    
-  // feedback each relaxation time with one step time delay
+  // feedback each sampling time with one step time delay
   //describe Experimental demonstration of information-to-energy conversion and validation of the generalized Jarzynski equality
-  //each feedback cycle transition between two equilibirum states. 
 
-  for(int j=1;j<steps-1;j++){ //you put -1 to ensure final state is at equilibrium. 
+  for(int j=1;j<steps;j++){ //begins in 1 for the initial dist to be canonical
 	//evolve one step each particle:
-  if (j%samp==0){ //each relaxation time the protocol is executed.      
-      rise = particle.Protocol(gain,ran64);//calculates rise of the potential
+  if (j%evolve==0){ //each sampling time the protocol is exeucted 
+      //here's no delation time on the application of the protocol  
+      Pot=particle.get_Pot();//stores potential before rising 
+      rise = particle.Protocol(gain,ran64);//measurement
+      particle.set_Pot(particle.get_Pot()+rise);//rises the trap immediately with no delation time
+      particle.CalculateWork(Pot);//calculates the input work
       
       particle.CalculateForce();
-      particle.ThermoEvolution(ran64);
-      
-      cout<<j/samp_freq<<"  "<<particle.get_Pos()<<" "<<particle.get_Pot()<<endl;  
-      particle.set_Pot(particle.get_Pot()+rise);//rises the trap with a time step ddelay.
+      particle.ThermoEvolution(ran64);  
+      cout<<j*dt<<"  "<<particle.get_Pos()<<" "<<particle.get_Pot()<<endl;  
   }else{         
       particle.CalculateForce();
-	    particle.ThermoEvolution(ran64);//evolves the system   
-      
-      cout<<j/samp_freq<<"  "<<particle.get_Pos()<<" "<<particle.get_Pot()<<endl;    
+	    particle.ThermoEvolution(ran64);//evolves the system         
+      cout<<j*dt<<"  "<<particle.get_Pos()<<" "<<particle.get_Pot()<<endl;    
     }
   }
+  cout<<particle.get_Work()<<endl; //the last line is the work 
   return 0;
 }
 
