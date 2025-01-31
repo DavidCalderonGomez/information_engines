@@ -38,10 +38,23 @@ From now on the system is measured at each sampling time and the action of the p
 
 ### forward process
 
-This is the case where the measurements are perfect. 
+This is the case where the measurements are perfect. Protocol is applied every sampling time 1/40 untis of time. The file forward-process has data of time position and potential. total time 100 untis. In the corresponding notebook is the plot and in the legend the input work asociated with this realization. 
 
+### forward-process-error
 
+This is the same as before but now you have some gaussian error with 0 mean and variance 1 that is added to each measurement, scaled by a factor of 1/11. It can be understood that the input work is not zero anymore, in order to be that way one should reduce the gain to some optimal value that is calculated in forward-process-error-optimal.cpp. As a consecuence one expect the particle not to be lifted as fast as the ideal case. 
 
+### forward-process-error-optimal
+
+The program performs for a range of gains the calculation of the average work of 1000 runs for a total time of 100 units. The in the notebook we find the point at which a linear fit crosses zero, meaning that for that particular gain, the engine input work is zero and therefore is the optimal gain. The linear fit is again made with scipy linregress. 
+
+### phase-transition 
+
+Calculates the optimal gain for different values of noise and there is evidence of a phase transtion between a working regime, where the only way of zero input work is not to lift the particle , and a working regime where there is a non zero optimal gain. This is the same as exposed in [3]. The graph shows the inverse of the noise factor, knon as snr, in log scale on the x axis and the respective optimal gain in the y axis. The simulation runs 500 particles over a time of 100 units. It calculates optimal gains as a linear interpolation. This simulation has been so long, since it has to make the forward-process-error-optimal many times for different noise values. 
+
+### output-power
+
+This program calculates the output power, or in other words, the average gain of free energy divided over time, for the optimal gains calculated before in phase transition. It can be see that the output power reaches a max value at a 0.3 kBT/tau_r. In this case the phase transition also makes sense since for the non working regime the output power is simply zero. This results have to be compared with the experimental results of Saha et al [3]. 
 
 [1] Goga
 [2] Julian David 
