@@ -26,7 +26,7 @@ int main(){
   if (j%evolve==0){ //each sampling time the protocol is exeucted 
       //here's no delation time on the application of the protocol  
       Pot=particle.get_Pot();//stores potential before rising 
-      rise = particle.Protocol(gain,ran64);//measurement
+      rise = particle.Protocol(gain,ran64,0.0);//measurement with no error
       particle.set_Pot(particle.get_Pot()+rise);//rises the trap immediately with no delation time
       particle.CalculateWork(Pot);//calculates the input work
       

@@ -8,25 +8,25 @@
 //sampling frequency is 40 times per relaxation time 
 //---------------------------------------------------------------------------------------------------
 const double samp = 40, evol=32; //sampling time and the number of evolutions each sampling time
-const double Mass=0.8,kbT=640, gama=640/Mass, kspring=640, gravity = 640; //ts is the sampling time gama=640
+const double Mass=0.8,kbT=640, gama=640/Mass, kspring=640, gravity = 640; //ts is the sampling time 
 const double dt=1/(samp*evol); //that number dividing is found to reproduce the thermostat accurately
 const double alpha = 1-exp(-gama*dt), alphap=alpha*(2-alpha);
 //---------------------------------------------------------------------------------------------------
 class Particle{
-  double Pos,Vel,Vhalf, Dv, Work, Measurement, Fex, Pot;
+  double Pos,Vel,Vhalf, Dv, Work, Measurement, Fex, Pot, noise;
  public:		    
   double get_Pos(){ return Pos; }
-  double get_Vel(){ return Vhalf; }
+  double get_Vel(){ return Vhalf; } //returns the velocity at half step times 
   double get_Pot(){return Pot;}
   void set_Pot(double value){Pot=value;}
   double get_Work(){return Work;}
   
   void Initialize(double Pos0, double Vel0);
-  void Launch();//First step in the Gunsteren Berendsen algorithm
-  void CalculateForce();
+  void Launch();//velocity half step before 
+  void CalculateForce(); //Calculates forces. 
   void ThermoEvolution(Crandom &ran64);//evolves the system
-  double Protocol(double gain, Crandom &ran64);//returns the difference between measurement and potential
-  void CalculateWork(double previous_Pot);
+  double Protocol(double gain, Crandom &ran64, double noise);//returns the difference between measurement and potential
+  void CalculateWork(double previous_Pot);//calculates the input work 
 };
 //--------------------------------------------------------------------------------------------------
 //Method implementation
@@ -42,18 +42,14 @@ void Particle::CalculateForce(){
 }
 void Particle::ThermoEvolution(Crandom &ran64){
   //one step of thermal evolution
-
   Vel=Vhalf+Fex/Mass*dt;
-
   Dv=-alpha*Vel+sqrt(alphap*kbT/Mass)*ran64.gauss(0,1);
-
   Pos=Pos+(Vel+Dv/2)*dt;
-
   Vhalf=Vel+Dv;
 }
 
-double Particle::Protocol(double gain, Crandom &ran64){ 
-  Measurement = Pos;
+double Particle::Protocol(double gain, Crandom &ran64, double noise){ 
+  Measurement = Pos+ran64.gauss(0,1)*noise; // not signal to noise ratio but the noise the characteristic scale is in fact 1
   double diff = Measurement-Pot;
   if(diff>0){ 
     return gain*diff;
