@@ -10,7 +10,7 @@ using std::cout, std::endl;
 
 int total_time = 25;
 int steps = total_time/dt; 
-const int runs = 10000;
+const int runs = 20000;
 double velocities[runs]; // creates an array that will store position of each particle
 
 double variance(const double* data);

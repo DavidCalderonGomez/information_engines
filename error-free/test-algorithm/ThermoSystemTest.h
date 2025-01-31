@@ -5,9 +5,9 @@
 //ts=1 mus, kspring=42pN/mum, gamma=3,36x10^-8 kg/s, g=9,8m²/s, kBT=403,2x10^-23J, m=42 x10^-15kg
 //We'll use the following new units: m'=9,8e-9m, s'=0,8e-3s, kg'=42e-15kg 
 //---------------------------------------------------------------
-double samp_freq=40;
-double Mass=0.8,ts=1/samp_freq,kbT=640, gama=0.25, kspring=640, gravity = 640; //ts is the sampling time
-double dt=ts/20; //that number dividing is found to reproduce the thermostat accurately
+double samp=40, evol=32;
+double Mass=0.8,kbT=640, gama=0.25, kspring=640, gravity = 640; //ts is the sampling time
+double dt=1/(samp*evol); //that number dividing is found to reproduce the thermostat accurately
 double alpha = 1-exp(-gama*dt), alphap=alpha*(2-alpha);
 //---------------------------------------------------------------------------------------------------
 class Particle{
