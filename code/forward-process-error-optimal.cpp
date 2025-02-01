@@ -6,7 +6,7 @@
 using std::cout, std::endl;
 int total_time=100, sample=samp, evolve=evol;
 int steps = sample*evolve*total_time; 
-int runs = 1000;
+int runs = 5000;
 
 int main(){
 
@@ -16,7 +16,7 @@ int main(){
   double rise, Pot=0;
   double mean_work=0; //ensemble average 
 
-  for (double gain = 1.56; gain <=1.58; gain+=0.0005){
+  for (double gain = 1.56; gain <=1.58; gain+=0.001){
 
     for (int i = 0; i < runs; i++) {
       particle[i].Initialize(0,0); 
