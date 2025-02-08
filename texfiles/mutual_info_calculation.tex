@@ -1,0 +1,65 @@
+
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\begin{document}
+
+\title{Trajectory-Based Mutual Information in a Markovian System}
+\author{}
+\date{}
+\maketitle
+
+\section*{Introduction}
+
+In the context of the generalized Jarzynski equality under non-equilibrium feedback control, the mutual information \(I_c\) quantifies the information gained through measurements over entire trajectories. Here, we consider a system where the true positions (system trajectory) are denoted by \(\{x_k\}\) and the corresponding measurement outcomes (measurement trajectory) by \(\{m_k\}\). In a Markovian system, both the system dynamics and the measurement process are memoryless. This allows us to factorize the conditional probabilities.
+
+\section*{Key Equations}
+
+\subsection*{1. Definition of the Mutual Information \(I_c\)}
+
+The mutual information is defined as the ensemble average of the logarithm of the ratio between the conditional probability of a measurement trajectory given a system trajectory and its marginal probability:
+\begin{equation}
+I_c = \left\langle \ln \left( \frac{P[\{m_k\} \mid \{x_k\}]}{P[\{m_k\}]} \right) \right\rangle.
+\end{equation}
+
+\subsection*{2. Factorization of the Conditional Probability in a Markovian System}
+
+For a Markovian system, the conditional probability of the measurement trajectory given the system trajectory factorizes as:
+\begin{equation}
+P[\{m_k\} \mid \{x_k\}] = \prod_{k=1}^{T} P(m_k \mid x_k).
+\end{equation}
+
+Assuming a Gaussian noise model for the measurements, the conditional probability at each time step is given by:
+\begin{equation}
+P(m_k \mid x_k) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(m_k - x_k)^2}{2\sigma^2}\right),
+\end{equation}
+where \(\sigma\) is the noise standard deviation.
+
+For the \(i\)-th trajectory, the overall conditional probability is:
+\begin{equation}
+P[\{m_k^{(i)}\} \mid \{x_k^{(i)}\}] = \prod_{k=1}^{T} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(m_k^{(i)} - x_k^{(i)})^2}{2\sigma^2}\right).
+\end{equation}
+
+\subsection*{3. Estimation of the Marginal Probability}
+
+The marginal probability for a given measurement trajectory \(\{m_k^{(i)}\}\) is estimated by averaging the conditional probabilities over an ensemble of \(M\) trajectories:
+\begin{equation}
+P[\{m_k^{(i)}\}] \approx \frac{1}{M} \sum_{j=1}^{M} \prod_{k=1}^{T} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(m_k^{(i)} - x_k^{(j)})^2}{2\sigma^2}\right).
+\end{equation}
+
+\subsection*{4. Final Expression for the Mutual Information}
+
+Combining the above results, the mutual information is given by:
+\begin{equation}
+I_c \approx \frac{1}{M} \sum_{i=1}^{M} \ln \left( \frac{\prod_{k=1}^{T} P(m_k^{(i)} \mid x_k^{(i)})}{P[\{m_k^{(i)}\}]} \right).
+\end{equation}
+
+This expression quantifies the information gain per measurement trajectory, averaged over all trajectories in the ensemble.
+
+\section*{Conclusion}
+
+By collecting the full trajectories \(\{x_k\}\) (true positions) and \(\{m_k\}\) (measurement outcomes) for each simulation run, and assuming a Markovian system with Gaussian measurement noise, the mutual information \(I_c\) can be computed using the factorized probabilities shown above.
+
+\end{document}
