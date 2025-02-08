@@ -16,6 +16,7 @@ class Particle{
   double Pos,Vel,Vhalf, Dv, Work, Measurement, Fex, Pot, noise;
  public:		    
   double get_Pos(){ return Pos; }
+  double get_Measurement(){return Measurement;}
   double get_Vel(){ return Vhalf; } //returns the velocity at half step times 
   double get_Pot(){return Pot;}
   void set_Pot(double value){Pot=value;}

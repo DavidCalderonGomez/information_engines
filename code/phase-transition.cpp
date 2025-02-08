@@ -12,13 +12,13 @@ int main(){
 
   Crandom ran64(1);//create the generator of random numbers
   Particle particle[runs]; //create a particle
-  double optimal_gain=0, delta_gain=0.1; //noise ratio 
+  double optimal_gain=0, delta_gain=0.01; //noise ratio 
   double rise, Pot=0;
   double mean_work=0, mean_work_prev=0; //ensemble average 
 
 
-for(double snr=0.1;snr<=100;snr*=1.5){
-  for (double gain = 0; gain <=3; gain+=delta_gain){
+for(double snr=0.5;snr<=110;snr*=1.1){
+  for (double gain = 0; gain <=2.5; gain+=delta_gain){
 
     for (int i = 0; i < runs; i++) {
       particle[i].Initialize(0,0); 
