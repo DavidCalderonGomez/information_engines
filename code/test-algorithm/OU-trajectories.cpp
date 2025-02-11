@@ -23,12 +23,12 @@ int main(){
       particle[k].Launch();
     }  
     for(int j=1;j<steps;j++){
-      cout<<j*dt<<" ";
+      if(j%10==0)cout<<j*dt<<" ";
       for(int k=0;k<runs;k++) {
 	      particle[k].ThermoEvolution(ran64);//evolves the system         
-        cout<<particle[k].get_Vel()<< " ";
+        if(j%10==0)cout<<particle[k].get_Vel()<< " ";
       }
-      cout<<endl;
+      if(j%10==0)cout<<endl;
     }
   return 0;
 }
