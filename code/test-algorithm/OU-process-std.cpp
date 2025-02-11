@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iostream>
 #include <cmath>
 #include "..\Random64.h"
 #include "ThermoSystemTest.h"
