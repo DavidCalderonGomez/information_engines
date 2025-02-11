@@ -21,6 +21,14 @@ int main(){
     particle[i].Launch();
   }
 
+  //equilibrate the system 
+  for (int j = 0; j < 2*sample*evolve; j++){ //wait 2 relaxation times. 
+    for (int i = 0; i < runs; i++){
+      particle[i].CalculateForce();
+      particle[i].ThermoEvolution(ran64);//evolves the system         
+    }
+  }
+
   for(int j=1;j<steps;j++){ //begins in 1 for the initial dist to be canonical
 	//evolve one step each particle:
     if (j%evolve==0){
