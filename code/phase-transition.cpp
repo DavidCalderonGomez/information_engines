@@ -8,6 +8,7 @@ int total_time=100, sample=samp, evolve=evol;
 int steps = sample*evolve*total_time; 
 int runs = 500;
 
+
 int main(){
 
   Crandom ran64(1);//create the generator of random numbers
@@ -15,7 +16,7 @@ int main(){
   double optimal_gain=0, delta_gain=0.01; //noise ratio 
   double rise, Pot=0;
   double mean_work=0, mean_work_prev=0; //ensemble average 
-
+  int thermal_steps=2*evol*samp; //2 relaxation times
 
 for(double snr=0.5;snr<=110;snr*=1.1){
   for (double gain = 0; gain <=2.5; gain+=delta_gain){
@@ -27,8 +28,8 @@ for(double snr=0.5;snr<=110;snr*=1.1){
     }
 
     for(int j=1;j<steps;j++){
-    
       for (int i = 0; i < runs; i++){
+        if(j<thermal_steps) continue; //thermalization for two relaxation times  
         if (j%evolve==0){ //each sampling time the protocol is exeucted 
         //here's no delation time on the application of the protocol  
           Pot=particle[i].get_Pot();//stores potential before rising 
