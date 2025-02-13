@@ -15,6 +15,7 @@ int main(){
   double noise=1.0/11.0; //noise ratio 
   double rise, Pot=0;
   double mean_work=0; //ensemble average 
+  int thermal_steps=2*evol*samp; //2 relaxation times
 
   for (double gain = 1.56; gain <=1.58; gain+=0.001){
 
@@ -23,10 +24,10 @@ int main(){
       particle[i].CalculateForce();
       particle[i].Launch();
     }
-
-  for(int j=1;j<steps;j++){
+  for(int j=0;j<steps;j++){
     
     for (int i = 0; i < runs; i++){
+      if(j<thermal_steps) continue; //thermalization for two relaxation times
       if (j%evolve==0){ //each sampling time the protocol is exeucted 
       //here's no delation time on the application of the protocol  
         Pot=particle[i].get_Pot();//stores potential before rising 

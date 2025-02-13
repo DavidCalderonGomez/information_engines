@@ -17,6 +17,7 @@ int main(){
   Particle particle[runs]; //create an array of particles  
   double rise;
   double mean_free=0;
+  int thermal_steps=2*evol*samp; //2 relaxation times
 
   std::string data = "phase-transition-utf8.txt";
   std::ifstream inputFile(data);
@@ -31,9 +32,10 @@ int main(){
       particle[i].Launch();
     }
 
-  for(int j=1;j<steps;j++){
+  for(int j=0;j<steps;j++){
     
     for (int i = 0; i < runs; i++){
+      if(j<thermal_steps) continue; //thermalization for two relaxation times  
       if (j%evolve==0){ //each sampling time the protocol is exeucted 
       //here's no delation time on the application of the protocol  
         rise = particle[i].Protocol(gain,ran64,1.0/snr);//measurement with some gaussian error
