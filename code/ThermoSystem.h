@@ -13,7 +13,7 @@ const double dt=1/(samp*evol); //that number dividing is found to reproduce the 
 const double alpha = 1-exp(-gama*dt), alphap=alpha*(2-alpha);
 //---------------------------------------------------------------------------------------------------
 class Particle{
-  double Pos,Vel,Vhalf, Dv, Work, Measurement, Fex, Pot, noise;
+  double Pos,Vel,Vhalf, Dv, Work, Measurement, Fex, Pot, noise, error;
  public:		    
   double get_Pos(){ return Pos; }
   double get_Measurement(){return Measurement;}
@@ -50,7 +50,12 @@ void Particle::ThermoEvolution(Crandom &ran64){
 }
 
 double Particle::Protocol(double gain, Crandom &ran64, double noise){ 
-  Measurement = Pos+ran64.gauss(0,1)*noise; // not signal to noise ratio but the noise the characteristic scale is in fact 1
+  
+  error = ran64.gauss(0,1);
+  if(error>3) error=3;
+  if(error<-3) error=-3;
+  
+  Measurement = Pos+error*noise; // not signal to noise ratio but the noise the characteristic scale is in fact 1
   double diff = Measurement-Pot;
   if(diff>0){ 
     return gain*diff;

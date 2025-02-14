@@ -30,12 +30,16 @@ int main(){
       particle[i].Initialize(0,0); 
       particle[i].CalculateForce();
       particle[i].Launch();
+      
+      for (int j = 0; j < thermal_steps; j++){ //wait 2 relaxation times. 
+        particle[i].CalculateForce();
+        particle[i].ThermoEvolution(ran64);//evolves the system         
+      }
     }
 
   for(int j=0;j<steps;j++){
     
     for (int i = 0; i < runs; i++){
-      if(j<thermal_steps) continue; //thermalization for two relaxation times  
       if (j%evolve==0){ //each sampling time the protocol is exeucted 
       //here's no delation time on the application of the protocol  
         rise = particle[i].Protocol(gain,ran64,1.0/snr);//measurement with some gaussian error

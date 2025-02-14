@@ -4,9 +4,9 @@
 #include "ThermoSystem.h"
 
 using std::cout, std::endl;
-int total_time=100, sample=samp, evolve=evol;
+int total_time=50, sample=samp, evolve=evol;
 int steps = sample*evolve*total_time; 
-int runs = 500;
+int runs = 100;
 
 
 int main(){
@@ -25,11 +25,15 @@ for(double snr=0.5;snr<=110;snr*=1.1){
       particle[i].Initialize(0,0); 
       particle[i].CalculateForce();
       particle[i].Launch();
+      //thermalization
+      for (int j=0;j<thermal_steps;j++){
+        particle[i].CalculateForce();
+        particle[i].ThermoEvolution(ran64);  
+      }
     }
 
     for(int j=1;j<steps;j++){
       for (int i = 0; i < runs; i++){
-        if(j<thermal_steps) continue; //thermalization for two relaxation times  
         if (j%evolve==0){ //each sampling time the protocol is exeucted 
         //here's no delation time on the application of the protocol  
           Pot=particle[i].get_Pot();//stores potential before rising 
