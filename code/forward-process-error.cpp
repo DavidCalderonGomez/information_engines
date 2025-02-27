@@ -11,7 +11,7 @@ int main(){
 
   Crandom ran64(1);//create the generator of random numbers
   Particle particle; //create a particle
-  double gain=1.57, noise=1.0/11.0; //how much you rise the potential. 
+  double gain=1.58, noise=1.0/11.0; //how much you rise the potential. 
   double rise, Pot=0;
   int thermal_steps=2*samp*evol;
 
@@ -19,12 +19,16 @@ int main(){
     particle.CalculateForce();
     particle.Launch();
 
+    //thermalization
+  for (int j=0;j<thermal_steps;j++){
+    particle.CalculateForce();
+    particle.ThermoEvolution(ran64);  
+  }
   // feedback each sampling time with one step time delay
   //describe Experimental demonstration of information-to-energy conversion and validation of the generalized Jarzynski equality
 
   for(int j=0;j<steps;j++){ //begins in 1 for the initial dist to be canonical
-	//evolve one step each particle:
-  if(steps<thermal_steps)continue;
+
   if (j%evolve==0){ //each sampling time the protocol is exeucted 
       //here's no delation time on the application of the protocol  
       Pot=particle.get_Pot();//stores potential before rising 

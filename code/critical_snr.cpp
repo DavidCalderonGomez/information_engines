@@ -6,19 +6,19 @@
 using std::cout, std::endl;
 int total_time=50, sample=samp, evolve=evol;
 int steps = sample*evolve*total_time; 
-int runs = 100;
+int runs = 1000;
 
 
 int main(){
 
   Crandom ran64(1);//create the generator of random numbers
   Particle particle[runs]; //create a particle
-  double optimal_gain=0, delta_gain=0.01; //noise ratio 
+  double optimal_gain=0, delta_gain=0.001; //noise ratio 
   double rise, Pot=0;
   double mean_work=0, mean_work_prev=0; //ensemble average 
   int thermal_steps=2*evol*samp; //2 relaxation times
 
-for(double snr=0.5;snr<=110;snr*=1.1){
+for(double snr=0.6;snr<=0.8;snr+=0.01){
   for (double gain = 0; gain <=2.5; gain+=delta_gain){
 
     for (int i = 0; i < runs; i++) {
