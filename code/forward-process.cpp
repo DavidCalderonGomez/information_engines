@@ -19,12 +19,17 @@ int main(){
     particle.CalculateForce();
     particle.Launch();
 
+    //thermalization
+  for (int j=0;j<thermal_steps;j++){
+    particle.CalculateForce();
+    particle.ThermoEvolution(ran64);  
+  }
+
   // feedback each sampling time with one step time delay
   //describe Experimental demonstration of information-to-energy conversion and validation of the generalized Jarzynski equality
 
   for(int j=0;j<steps;j++){ //begins in 1 for the initial dist to be canonical
 	//evolve one step each particle:
-  if(j<thermal_steps)continue;//thermalize
   if (j%evolve==0){ //each sampling time the protocol is exeucted 
       //here's no delation time on the application of the protocol  
       Pot=particle.get_Pot();//stores potential before rising 
@@ -35,7 +40,7 @@ int main(){
       particle.CalculateForce();
       particle.ThermoEvolution(ran64);  
       cout<<j*dt<<"  "<<particle.get_Pos()<<" "<<particle.get_Pot()<<endl;  
-  }else{         
+  }else {         
       particle.CalculateForce();
 	    particle.ThermoEvolution(ran64);//evolves the system         
       cout<<j*dt<<"  "<<particle.get_Pos()<<" "<<particle.get_Pot()<<endl;    

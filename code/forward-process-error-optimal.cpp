@@ -17,17 +17,21 @@ int main(){
   double mean_work=0; //ensemble average 
   int thermal_steps=2*evol*samp; //2 relaxation times
 
-  for (double gain = 1.56; gain <=1.58; gain+=0.001){
+  for (double gain = 1.57; gain <=1.59; gain+=0.001){
 
     for (int i = 0; i < runs; i++) {
       particle[i].Initialize(0,0); 
       particle[i].CalculateForce();
       particle[i].Launch();
+        //thermalization
+      for (int j=0;j<thermal_steps;j++){
+        particle[i].CalculateForce();
+        particle[i].ThermoEvolution(ran64);  
+      }
     }
   for(int j=0;j<steps;j++){
     
     for (int i = 0; i < runs; i++){
-      if(j<thermal_steps) continue; //thermalization for two relaxation times
       if (j%evolve==0){ //each sampling time the protocol is exeucted 
       //here's no delation time on the application of the protocol  
         Pot=particle[i].get_Pot();//stores potential before rising 
