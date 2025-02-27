@@ -82,3 +82,6 @@ This calculates the mutual information average value, using all the data generat
 [2] Julian David 
 [3] Saha
 
+### mutual info knn 
+Calculates the mutual info using the Kozachenko Leonenko entropy estimator. with the expressión i derived myself. 
+
