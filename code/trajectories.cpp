@@ -6,7 +6,7 @@
 using std::cout, std::endl;
 int total_time=50, sample=samp, evolve=evol;
 int steps = sample*evolve*total_time; 
-int runs = 5000;
+int runs = 2000;
 
 int main(){
 
